@@ -53,13 +53,15 @@ public class Flying : MonoBehaviour
                 switch (cameraPosition)
                 {
                     case 0:
-
+                        VrRig.transform.parent = null; //Ikke vær parent til noget igen
+                        VrRig.transform.position = new Vector3(0, 0, 0); //Tilbage til der hvor man sad i starten
+                        VrRig.transform.Rotate(0, 180, 0);
                         cameraPosition++;
                         break;
 
                     case 1:
+                        //VrRig.transform.parent = gameObject.transform; //Virker måske idk
                         VrRig.transform.SetParent(this.transform, false);
-
                         VrRig.transform.localPosition = new Vector3(0, -0.8f, 0.7f);
                         VrRig.transform.Rotate(0, 180, 0);
 
