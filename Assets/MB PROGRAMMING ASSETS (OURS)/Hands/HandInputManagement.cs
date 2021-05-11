@@ -36,9 +36,9 @@ public class HandInputManagement : MonoBehaviour
 
 
 
-    void Start() //ALT DETTE SKAL SKE FØR START (Måske i awake?)
+    void Start()
     {
-        List<InputDevice> devices = new List<InputDevice>(); //En InputDevice er f.eks. en controller, kamera, bodytracker osv
+        List<InputDevice> devices = new List<InputDevice>();                            //En InputDevice er f.eks. en controller, kamera, bodytracker osv
         InputDevices.GetDevicesWithCharacteristics(controllerCharacteristics, devices);
         //Få fat i alle devices, men kun dem som matcher vores controllerCharacteristics. F.eks. right, controller, left. De devices som den finder bliver smidt ind i listen "devices"
 
@@ -74,7 +74,7 @@ public class HandInputManagement : MonoBehaviour
 
     }
 
-    //Useless right now
+
     void Update()
     {
 
@@ -94,8 +94,6 @@ public class HandInputManagement : MonoBehaviour
         controllerDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out ControllerOverview.inputValues.SecondaryButton);  //Få secondary button bool værdi //B
         controllerDevice.TryGetFeatureValue(CommonUsages.grip, out ControllerOverview.inputValues.Grip);
         controllerDevice.TryGetFeatureValue(CommonUsages.trigger, out ControllerOverview.inputValues.Trigger);
-        
-
 
         return ControllerOverview;
     }
