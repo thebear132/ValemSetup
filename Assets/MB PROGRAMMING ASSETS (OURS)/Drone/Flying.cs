@@ -44,7 +44,7 @@ public class Flying : MonoBehaviour
     void Update()
     {
 
-        if (CheckHands() == true) //Only do if hands are 
+        if (CheckHands() == true) //Kun virk hvis hænderne er loaded ind. //Her kan man skifte perspektiv til FPV
         {
             bool AButtonNow = rightController.GetControllerInfo().inputValues.PrimaryButton;
             if (AButtonLastFrame == false && AButtonNow == true)    //Pressed A and didnt press it last frame
@@ -162,6 +162,8 @@ public class Flying : MonoBehaviour
         Vector3 yawVec = new Vector3(0, 0, rb.rotation.x);
         rb.AddRelativeTorque(-yawVec * errorYawForce);
         //Debug.Log("Yaw rotation = " + rb.rotation.x);
+
+        Debug.Log("Pitch = " + pitchVec);
 
 
 

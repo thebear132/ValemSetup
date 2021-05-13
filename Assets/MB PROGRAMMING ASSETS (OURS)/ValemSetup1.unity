@@ -1236,6 +1236,11 @@ PrefabInstance:
       propertyPath: VrRig
       value: 
       objectReference: {fileID: 1453734844}
+    - target: {fileID: 919132148242226097, guid: 998d5e2d0b636bf4187905bfef848f25,
+        type: 3}
+      propertyPath: errorPitchForce
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2496025810286481661, guid: 998d5e2d0b636bf4187905bfef848f25,
         type: 3}
       propertyPath: m_RootOrder
