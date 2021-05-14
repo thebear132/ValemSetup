@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
@@ -40,12 +41,6 @@ public class GameController : MonoBehaviour
         time.transform.parent.gameObject.SetActive(true); //Enabler kun i den her scene
     }
 
-    public void restart() //Load den første scene
-    {
-        drone.TurnedOff = false;
-        labsBack = laps;
-        time.text = "00:00";
-    }
 
     private void lap()
     {
@@ -55,7 +50,6 @@ public class GameController : MonoBehaviour
             gameFinished.Invoke(timeRemaining);
 
             Transform droneTransform = drone.gameObject.transform;
-
             droneTransform.position = StartPos.position;
             droneTransform.rotation = StartPos.rotation;
 
@@ -68,6 +62,7 @@ public class GameController : MonoBehaviour
             timeRemaining = 0;
             timerIsRunning = false;
             Debug.Log("Game is done!");
+            SceneManager.LoadScene(0); //Load Menuen
         }
     }
 
