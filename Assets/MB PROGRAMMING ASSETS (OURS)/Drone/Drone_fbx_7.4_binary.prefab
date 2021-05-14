@@ -186,7 +186,7 @@ GameObject:
   - component: {fileID: 2496025810286481661}
   - component: {fileID: 919132148242226096}
   - component: {fileID: 919132148242226095}
-  - component: {fileID: 919132148242226097}
+  - component: {fileID: 518301847}
   m_Layer: 0
   m_Name: Drone_fbx_7.4_binary
   m_TagString: Untagged
@@ -239,7 +239,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.8, y: 0.13, z: 0.3}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &919132148242226097
+--- !u!114 &518301847
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -248,20 +248,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 3019798323657001543}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc11399cecf865a4fa0cbbac7b81c5a8, type: 3}
+  m_Script: {fileID: 11500000, guid: 1c210bfb0541e9d44a283d415b5b3796, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RightRotor: {fileID: 4971368026774791819}
-  LeftRotor: {fileID: 3747509141786400429}
+  RightRotor: {fileID: 5213792717402176154}
+  LeftRotor: {fileID: 5185400797813050346}
   VrRig: {fileID: 0}
   gravityForce: -1
-  thrustForce: 15
-  pitchForce: 0.6
-  rollForce: 5
-  yawForce: 2.1
-  errorRollForce: 4
-  errorPitchForce: 5
-  errorYawForce: 8.6
+  thrustForce: 20
+  pitchForce: 4
+  rollForce: 4
+  yawForce: 6
+  Propertional: {x: 0.1, y: 0.1, z: 0.1}
+  integral: {x: 0.01, y: 0.01, z: 0.01}
+  Derivative: {x: 0, y: 0, z: 0}
+  TurnedOff: 0
+  rotationTarget: {x: 0, y: 0, z: 0}
 --- !u!1 &3747509141786400429
 GameObject:
   m_ObjectHideFlags: 0
