@@ -22,14 +22,14 @@ public class FlyingUpdated : MonoBehaviour
 
     //PID gains
     [SerializeField]
-    private Vector3 Propertional;
+    private Vector3 Propertional; //paramtre som angiver propertional parametret til de forskellige aksers af PID'erne
     [SerializeField]
-    private Vector3 integral;
+    private Vector3 integral; //paramtre som angiver integraler parametret til de forskellige aksers af PID'erne
     [SerializeField]
-    private Vector3 Derivative;
+    private Vector3 Derivative; //paramtre som angiver diffrentialet parametret til de forskellige aksers af PID'erne
 
     //PID ting
-    private PID[] regulators = new PID[3];
+    private PID[] regulators = new PID[3]; //array med PID regulatore for hver akse
     float distToGround;
     public bool TurnedOff = false;
 
@@ -38,14 +38,15 @@ public class FlyingUpdated : MonoBehaviour
     Rigidbody rb;
     void Start()
     {
+        //får rigidbodyen af dronen
         rb = gameObject.GetComponent<Rigidbody>();
 
-
-        //PID
+        //overføre PID værdierne til PID objekter
         regulators[0] = new PID(Propertional.x, integral.x, Derivative.x);
         regulators[1] = new PID(Propertional.y, integral.y, Derivative.y);
         regulators[2] = new PID(Propertional.z, integral.z, Derivative.z);
 
+        //set hvor langt der skal være stil jorden ud fra hvor stor collideren på dronen er.
         distToGround = gameObject.GetComponent<Collider>().bounds.extents.y;
     }
 
@@ -111,7 +112,12 @@ public class FlyingUpdated : MonoBehaviour
             Debug.Log("Hands not found yet, skipping FixedUpdate");
 
     }
-
+    
+    /// <summary>
+    /// funktion som udregner alle aksernes resultater af PID resultater
+    /// </summary>
+    /// <param name="err"> det er en vector som beskriver hvor meget at fejl der er på akserne</param>
+    /// <returns></returns>
     Vector3 calculateRotationCompensation(Vector3 err)
     {
         float x = regulators[0].calculate(err.x, Time.fixedDeltaTime);
@@ -124,47 +130,54 @@ public class FlyingUpdated : MonoBehaviour
 
 
     public Vector3 rotationTarget = Vector3.zero;
+    /// <summary>
+    /// funktion som tjekker om dronen har ramt jorden
+    /// </summary>
+    /// <returns></returns>
     bool IsGrounded()
     {
         return Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.1f);
     }
+    /// <summary>
+    /// funktion somholder holder tager controllernes input og ruglere dronen.
+    /// </summary>
     void ApplyFlyControls() //Inputene fra controllerne bliver anvendt på dronen her
     {
+        //få fat i controllers sticks
         HandInputManagement.ControllerClass.InputValues rightControllerValues = ControllerManager.rightController.GetControllerInfo().inputValues;
         HandInputManagement.ControllerClass.InputValues leftControllerValues = ControllerManager.leftController.GetControllerInfo().inputValues;
 
+        //overfør sticksnes værdi til akserne.
         float thrust = leftControllerValues.Primary2DAxis.y * thrustForce;
         float yaw = leftControllerValues.Primary2DAxis.x;
         float pitch = -rightControllerValues.Primary2DAxis.y; //Var vendt om
         float roll = rightControllerValues.Primary2DAxis.x;
 
-
+        //anti tyngdekraft så det er at dronen ikke falder.
         if (gravityForce == -1)
             gravityForce = -1 * Physics.gravity.y * rb.mass; //-1 * -9,82 * 1kg, hvis massen er 1kg
         //Debug.Log("Countergravity = " + gravityForce);
         rb.AddRelativeForce(new Vector3(0, gravityForce, 0)); //Counter tyngdekraften så den svæver selv
 
-
-
+        //tjek om dronen slukket og den er på jorden for at sørge for at den ikke flyver når den ikke skal.
         if (TurnedOff) return;
         if (!IsGrounded())
         {
-            //den 
+            //konverter dronens rotationsakser til unitys akser.
             Vector3 rotationTarget = (pitch * transform.right * pitchForce) + (yaw * transform.up * yawForce) + (roll * transform.forward * rollForce);
-            Vector3 rotationError = rotationTarget - rb.angularVelocity;
-            Vector3 compensation = calculateRotationCompensation(rotationError);
+            Vector3 rotationError = rotationTarget - rb.angularVelocity; //udregen fejlen på hastigheden
+            Vector3 compensation = calculateRotationCompensation(rotationError); //udregn PID værdierne
 
-            rb.AddTorque(rotationError);
+            rb.AddTorque(rotationError);// tilføj momenterne
         }
         else
         {
-            rotationTarget = Vector3.zero;
+            rotationTarget = Vector3.zero;//reset rotations målet.
         }
 
+        rb.
 
-        rb.AddRelativeForce(new Vector3(0, thrust, 0)); //Relativt til dronen //GODT!
-        //Debug.Log("pitch=" + pitch + ". roll=" + roll + ". yaw=" + yaw + ". thrust=" + thrust);
-
+        rb.AddForce(transform.up * thrust); //tilføj thrusten.
     }
 
 
@@ -186,11 +199,17 @@ public class FlyingUpdated : MonoBehaviour
         {
         }
 
+        /// <summary>
+        /// udregn PID værdien
+        /// </summary>
+        /// <param name="err">fejlen som den skal regulere efter</param>
+        /// <param name="timestep"> hvor lang tid siden sidste udregning</param>
+        /// <returns></returns>
         public float calculate(float err, float timestep)
         {
-            collector += k_i * err * timestep;
-            float output = Mathf.Clamp(k_p * err + k_i * collector + k_d * (err - lastValue), -3, 3);
-            lastValue = err;
+            collector += k_i * err * timestep; //udfør integrallets step.
+            float output = Mathf.Clamp(k_p * err + k_i * collector + k_d * (err - lastValue), -3, 3); //udregn og begræns PID værdien
+            lastValue = err; //gem værdie til næste udregning
             return output;
         }
     }

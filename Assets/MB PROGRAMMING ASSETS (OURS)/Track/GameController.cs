@@ -6,6 +6,9 @@ using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/// <summary>
+/// Monobehavior som holder styr på dronnens progress overordnet.
+/// </summary>
 public class GameController : MonoBehaviour
 {
     public GameDone gameFinished;
