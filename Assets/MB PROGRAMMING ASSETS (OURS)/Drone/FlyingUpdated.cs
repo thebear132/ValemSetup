@@ -154,8 +154,6 @@ public class FlyingUpdated : MonoBehaviour
             Vector3 rotationError = rotationTarget - rb.angularVelocity;
             Vector3 compensation = calculateRotationCompensation(rotationError);
 
-            Debug.Log(compensation);
-
             rb.AddTorque(rotationError);
         }
         else

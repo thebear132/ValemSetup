@@ -17,7 +17,7 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private GateController gateController;
     [SerializeField]
-    private flying drone;
+    private FlyingUpdated drone;
     [SerializeField]
     private Text time;
     [SerializeField]
@@ -35,9 +35,12 @@ public class GameController : MonoBehaviour
         labsBack = laps;
 
         gateController.courseDone.AddListener(lap);
+        StartPos = drone.transform;
+
+        time.transform.parent.gameObject.SetActive(true); //Enabler kun i den her scene
     }
 
-    public void restart()
+    public void restart() //Load den første scene
     {
         drone.TurnedOff = false;
         labsBack = laps;
