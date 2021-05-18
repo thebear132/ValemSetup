@@ -208,7 +208,7 @@ public class FlyingUpdated : MonoBehaviour
         public float calculate(float err, float timestep)
         {
             collector += k_i * err * timestep; //udfør integrallets step.
-            float output = Mathf.Clamp(k_p * err + k_i * collector + k_d * (err - lastValue), -3, 3); //udregn og begræns PID værdien
+            float output = Mathf.Clamp(k_p * err + collector + k_d * (err - lastValue)/timestep, -3, 3); //udregn og begræns PID værdien
             lastValue = err; //gem værdie til næste udregning
             return output;
         }
